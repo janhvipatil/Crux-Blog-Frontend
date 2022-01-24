@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import {
-    Box,
     useColorModeValue,
     Heading,
     Flex,
-    Button,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import DarkModeSwitch from "./DarkModeSwitch";
@@ -12,19 +10,15 @@ import NavItem from "./NavItem";
 
 
 export default function Navbar() {
-    const [top, setTop] = useState("0");
 
     // on scroll get the users scroll position
-    // if the user has scrolled 100px, change boxShadow to true
+    // if the user has scrolled 20px, change boxShadow to true
     const [boxShadow, setBoxShadow] = useState(false);
 
     useEffect(() => {
-        onmousemove = function (e) {
-            if (e.clientY < 30) setTop("0");
-            // console.log("mouse location:", e.clientX, e.clientY)
-        };
+
         const handleScroll = () => {
-            if (window.scrollY > 100) {
+            if (window.scrollY > 20) {
                 setBoxShadow(true);
             } else {
                 setBoxShadow(false);
@@ -41,44 +35,46 @@ export default function Navbar() {
         "0px 2px 4px rgba(0, 0, 0, 0.2)",
         "0px 2px 4px rgba(0, 0, 0, 0.4)"
     );
+    const navBackgroundColor = useColorModeValue(
+        "rgba(255, 255, 255, 0.96)",
+        "rgba(018, 035, 028, 0.90)"
+    )
 
     return (
         <Flex
             as="nav"
             w="100%"
+            h="60px"
             px="4"
             pt="4"
-            pb="6"
+            pb="4"
             alignItems="center"
-            pos="sticky"
-            top={top}
+            top={0}
             zIndex={10}
+            position="fixed"
+            bgColor={navBackgroundColor}
             // if boxshadow is true then boxshadow = boxshadow1
-            boxShadow={boxShadow1}
-            transition="top .5s ease-in-out, box-shadow .2s ease-in-out"
+            boxShadow={boxShadow ? boxShadow1 : "none"}
+            transition="box-shadow .2s ease-in-out"
+            justifyContent="space-between"
         >
             <NextLink href="/" passHref>
-                <Button
-                    as="a"
-                    variant="ghost"
-                    p={[1, 2, 4]}
-                    _hover={{ transform: "scale(1.05)" }}
-                    aria-label="Home"
-                    fontWeight="normal"
-                    title="Home"
-                >
-                    {/* logo here */}
-                    <Heading size="lg">
-                        Crux
-                    </Heading>
-                </Button>
+                {/* logo here */}
+                <Heading size="lg"
+                    m="0"
+                    _hover={{ transform: "scale(1.05)", cursor: "pointer" }}>
+                    Crux
+                </Heading>
             </NextLink>
 
-            <Box>
-                <NavItem title="About Us" href="/about-us" />
-                <NavItem title="Get in touch" href="/contact-us" />
+            <Flex
+                align="center"
+            >
+                <NavItem title="articles" href="/articles" />
+                <NavItem title="about us" href="/about-us" />
+                <NavItem title="get in touch" href="/contact-us" />
                 <DarkModeSwitch />
-            </Box>
+            </Flex>
 
         </Flex>
     );

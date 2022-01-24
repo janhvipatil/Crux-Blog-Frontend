@@ -6,13 +6,16 @@ const DarkModeSwitch = () => {
 
     return (
         <IconButton
+            display="inline-flex"
+            alignItems="center"
+            justifyContent="center"
             size="md"
             aria-label="Toggle dark mode"
             icon={colorMode === 'dark' ? <FiSun /> : <FiMoon />}
             fontSize='20px'
             onClick={toggleColorMode}
             borderRadius={5}
-            variant="ghost"
+            variant="unstyled"
             _hover={{ backgroundColor: useColorModeValue("gray.200", "gray.700") }}
             w={50}
         />

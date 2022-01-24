@@ -6,15 +6,14 @@ import { Poll } from '../types/poll';
 import { CalculateVote } from './CalculateVote';
 
 interface Props {
-
+    pollid: string,
 }
 
-export const OpinionPolls = (props: Props) => {
+export const OpinionPolls = ({ pollid }: Props) => {
 
     const [polls, setPolls] = useState<null | Poll[]>(null)
     const [error, setError] = useState<null | PostgrestError>(null)
     const [showOptions, setShowOptions] = React.useState(true)
-    const sectionBackground = useColorModeValue('gray.100', 'gray.200')
     const cardBackground = useColorModeValue('white', 'gray.800')
     const textColor = useColorModeValue('gray.600', 'gray.400')
     const toast = useToast();
@@ -24,6 +23,7 @@ export const OpinionPolls = (props: Props) => {
         const getPollsFromDatabase = async () => {
             let { data, error } = await supabase.from('polls')
                 .select(`heading, text, id, options`)
+                .eq('id', pollid)
                 .eq('isEnabled', true)
             return { data, error }
         }
@@ -33,7 +33,7 @@ export const OpinionPolls = (props: Props) => {
             setError(error)
         })
 
-    }, [])
+    }, [pollid])
 
     // console.log(polls)
 
@@ -71,7 +71,7 @@ export const OpinionPolls = (props: Props) => {
 
     return (
         <>
-            <Box as="section" bg={sectionBackground} py="12">
+            <Box as="section" py="12">
                 <Stack spacing={4} alignItems="center">
                     {polls?.map((poll) =>
                         <Box

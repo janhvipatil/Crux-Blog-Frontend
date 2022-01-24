@@ -67,7 +67,7 @@ export const NewsletterSignupForm = () => {
     }
 
     return (
-        <Box as="section" bg={mode('gray.100', 'gray.700')} py="12">
+        <>
             <Box
                 textAlign="center"
                 bg={mode('white', 'gray.800')}
@@ -77,18 +77,11 @@ export const NewsletterSignupForm = () => {
                 px={{ base: '6', md: '8' }}
                 py="12"
                 rounded="lg"
+                mb="12"
             >
                 <Box maxW="md" mx="auto">
-                    <Text
-                        color={mode('green.600', 'green.400')}
-                        fontWeight="bold"
-                        fontSize="sm"
-                        letterSpacing="wide"
-                    >
-                        6,000+ PEOPLE ALREADY JOINED ❤️️
-                    </Text>
                     <Heading mt="4" fontWeight="extrabold">
-                        Get new products every month on your inbox!
+                        Get new updates every month on your inbox!
                     </Heading>
                     <Box mt="6">
                         <chakra.form
@@ -131,6 +124,6 @@ export const NewsletterSignupForm = () => {
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </>
     )
 }

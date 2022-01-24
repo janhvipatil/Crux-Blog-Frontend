@@ -1,78 +1,75 @@
-import { useState, useEffect, ReactText } from 'react';
-import imageUrlBuilder from '@sanity/image-url';
+import { Box, Heading, Image, Text, Stack, useColorModeValue } from "@chakra-ui/react"
 import SanityBlockContent from '@sanity/block-content-to-react';
-import {
-    Box,
-    Heading,
-    Image,
-} from "@chakra-ui/react";
+import { GetServerSideProps } from "next/types"
+import { sanityClient, urlFor } from "../../utils/sanityClient"
+import { OpinionPolls } from "../../components/OpinionPolls";
+import { Navbar } from "../../ui/Navbar";
+import { Post } from "../../types/post";
 
-interface postProps {
-    title: string,
-}
+const Post = ({ title, mainImage, body, publishedAt, subText, pollID }: Post) => {
 
-export const Post = ({ title, body, image }: postProps) => {
-
-    const [imageUrl, setImageUrl] = useState('');
-
-    useEffect(() => {
-
-        const imgBuilder = imageUrlBuilder({
-            projectId: '58fcccuo',
-            dataset: 'production',
-        });
-
-        setImageUrl(imgBuilder.image(image));
-
-    }, [image]);
+    const textColor = useColorModeValue('gray.600', 'gray.400')
 
     return (
         <>
-            <Box>
-                <Heading>{title}</Heading>
-                {imageUrl &&
-                    <Image
-                        src={imageUrl}
-                        alt="blog post cover image"
-                        h={400}
-                    />}
-                <Box>
-                    <SanityBlockContent blocks={body} />
+            <Navbar />
+            <Box justify="center" align="center" mt={20}>
+                <Stack spacing={1} mb={6}>
+                    <Heading fontSize="7xl" letterSpacing="wide">{title}</Heading>
+                    <Text color={textColor} fontSize="md">{subText}</Text>
+                    <Text color="gray.500" fontSize="xs">Published: {publishedAt.slice(0, 10)}</Text>
+                </Stack>
+                <Image
+                    rounded="2xl"
+                    src={urlFor(mainImage).width(720).url() ?? undefined}
+                    alt={title}
+                />
+                <Box as="section">
+                    <Box className="text-blocks" ml={28} mr={28} pt={10}
+                        color={textColor}
+                        textAlign="start"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        fontSize="lg">
+                        <SanityBlockContent blocks={body} />
+                    </Box>
                 </Box>
+                <OpinionPolls pollid={pollID} />
             </Box>
         </>
-    );
-};
+    )
+}
 
-export const getServerSideProps = async pageContext => {
+export const getServerSideProps: GetServerSideProps = async pageContext => {
 
-    const pageSlug = pageContext.query.slug;
-
-    if (!pageSlug) {
-        return {
-            notFound: true
-        }
-    }
-
-    const query = encodeURIComponent(`*[ _type == "post" && slug.current == "${pageSlug}"]`);
-    const url = `https://58fcccuo.api.sanity.io/v1/data/query/production?query=${query}`;
-    const result = await fetch(url).then(res => res.json());
-    const post = result.result[0];
+    const pageSlug = pageContext.query.slug
+    const query = `*[ _type == "post" && slug.current == $pageSlug][0]{
+        title,
+        mainImage,
+        pollID,
+        publishedAt,
+        subText,
+        body
+    }`
+    const post = await sanityClient.fetch(query, { pageSlug })
 
     if (!post) {
         return {
-            notFound: true
+            props: null,
+            notFound: true,
         }
     } else {
         return {
             props: {
-                body: post.body,
                 title: post.title,
-                image: post.mainImage,
+                mainImage: post.mainImage,
+                body: post.body,
+                publishedAt: post.publishedAt,
+                subText: post.subText,
+                pollID: post.pollID,
             }
         }
     }
+}
 
-};
-
-export default Post;
+export default Post
