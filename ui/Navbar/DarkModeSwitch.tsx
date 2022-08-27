@@ -1,5 +1,5 @@
 import { useColorMode, IconButton, useColorModeValue, } from '@chakra-ui/react'
-import { FiSun, FiMoon } from "react-icons/fi"
+import { RiSunFill, RiMoonFill } from "react-icons/ri"
 
 const DarkModeSwitch = () => {
     const { colorMode, toggleColorMode } = useColorMode()
@@ -9,15 +9,12 @@ const DarkModeSwitch = () => {
             display="inline-flex"
             alignItems="center"
             justifyContent="center"
-            size="md"
             aria-label="Toggle dark mode"
-            icon={colorMode === 'dark' ? <FiSun /> : <FiMoon />}
-            fontSize='20px'
+            icon={colorMode === 'dark' ? <RiSunFill /> : <RiMoonFill />}
+            fontSize='1.25em'
             onClick={toggleColorMode}
             borderRadius={5}
-            variant="unstyled"
-            _hover={{ backgroundColor: useColorModeValue("gray.200", "gray.700") }}
-            w={50}
+            variant='ghost'
         />
     )
 }

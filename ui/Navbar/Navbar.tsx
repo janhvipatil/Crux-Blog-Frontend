@@ -3,10 +3,24 @@ import {
     useColorModeValue,
     Heading,
     Flex,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    IconButton,
+    Text,
+    HStack,
+    Input,
+    InputGroup,
+    InputLeftAddon,
+    Button,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import DarkModeSwitch from "./DarkModeSwitch";
-import NavItem from "./NavItem";
+import { MdOutlineArticle } from 'react-icons/md';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { CgMenu } from 'react-icons/cg';
+import { AiFillFacebook, AiFillInstagram, AiOutlineFileSearch, AiOutlineMessage, AiOutlineTwitter } from 'react-icons/ai';
 
 
 export default function Navbar() {
@@ -56,25 +70,53 @@ export default function Navbar() {
             // if boxshadow is true then boxshadow = boxshadow1
             boxShadow={boxShadow ? boxShadow1 : "none"}
             transition="box-shadow .2s ease-in-out"
-            justifyContent="space-between"
-        >
-            <NextLink href="/" passHref>
+            justifyContent="space-between">
+
+            <InputGroup w='25%' mr="20">
+                <InputLeftAddon rounded='lg'><AiOutlineFileSearch fontSize='1.25em' color='gray.400' /></InputLeftAddon>
+                <Input placeholder='Search' rounded='lg' />
+            </InputGroup>
+
+            <NextLink href="/">
                 {/* logo here */}
-                <Heading size="lg"
+                <Heading size="lg" fontWeight='extrabold'
                     m="0"
                     _hover={{ transform: "scale(1.05)", cursor: "pointer" }}>
-                    Crux
+                    Crux Blog
                 </Heading>
             </NextLink>
 
-            <Flex
-                align="center"
-            >
-                <NavItem title="articles" href="/articles" />
-                <NavItem title="about us" href="/about-us" />
-                <NavItem title="get in touch" href="/contact-us" />
+            <HStack>
                 <DarkModeSwitch />
-            </Flex>
+                <IconButton icon={<AiFillInstagram fontSize='1.25em' />} aria-label="instagram link" variant='ghost' />
+                <IconButton icon={<AiFillFacebook fontSize='1.25em' />} aria-label="facebook link" variant='ghost' />
+                <IconButton icon={<AiOutlineTwitter fontSize='1.25em' />} aria-label="twitter link" variant='ghost' />
+            </HStack>
+
+            <Menu>
+                <MenuButton
+                    as={IconButton}
+                    aria-label='Options'
+                    icon={<CgMenu />}
+                    variant='outline' />
+                <MenuList>
+                    <NextLink href="/articles">
+                        <MenuItem icon={<MdOutlineArticle fontSize='1.25em' />} command='⌘A'>
+                            <Text fontSize='sm'>Articles</Text>
+                        </MenuItem>
+                    </NextLink>
+                    <NextLink href="/about-us">
+                        <MenuItem icon={<BsFillPersonFill fontSize='1.25em' />} command='⌘I'>
+                            <Text fontSize='sm'>About Us</Text>
+                        </MenuItem>
+                    </NextLink>
+                    <NextLink href="/contact-us">
+                        <MenuItem icon={<AiOutlineMessage fontSize='1.25em' />} command='⌘C'>
+                            <Text fontSize='sm'>Get In Touch</Text>
+                        </MenuItem>
+                    </NextLink>
+                </MenuList>
+            </Menu>
 
         </Flex>
     );

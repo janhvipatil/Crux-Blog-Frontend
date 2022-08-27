@@ -1,4 +1,4 @@
-import { Box, Center, Heading, HStack, Image, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Center, Container, Flex, Heading, HStack, Image, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import Link from 'next/link'
 import { NewsletterSignupForm } from '../components/NewsletterSignupForm'
 import { Post } from '../types/post'
@@ -17,25 +17,31 @@ const Home = ({ posts }: postProps) => {
     <>
       <Navbar />
       {posts && (
-        <Center mt={20}>
-          <HStack spacing={4}>
+        <Flex my={20} px={24}>
+          <SimpleGrid columns={3} spacing={8}>
             {posts.map((post) => <Link href={`post/${post.slug.current}`} passHref={true} key={post._id}>
-              <Box>
+              <Box width='full' boxShadow='base' rounded='xl' bg='white' _hover={{ transform: "scale(1.01)", cursor: "pointer" }}>
                 <Image src={urlFor(post.mainImage).width(400).url() ?? undefined}
                   alt={post.title}
-                  rounded="md" />
-                <Stack spacing={1}>
-                  <Heading>{post.title}</Heading>
+                  roundedTop='xl' />
+                <Stack spacing={1} p={4}>
+                  <HStack spacing={1}>
+                    <Text fontWeight='semibold'>Genre</Text>
+                    <Text color="gray.500" fontSize="sm">- {post.publishedAt.slice(0, 10)}</Text>
+                  </HStack>
+                  <Text as='h2' fontSize='2xl' fontWeight='bold'>{post.title}</Text>
                   <Text color={textColor} fontSize="md">{post.subText}</Text>
-                  <Text color="gray.500" fontSize="sm">Published: {post.publishedAt.slice(0, 10)}</Text>
                 </Stack>
               </Box>
             </Link>
             )}
-          </HStack>
-        </Center>
-      )}
-      {/* <NewsletterSignupForm /> */}
+          </SimpleGrid>
+        </Flex>
+      )
+      }
+      <Box as='section' bg='gray.50' p={20}>
+        <NewsletterSignupForm />
+      </Box>
     </>
   )
 }

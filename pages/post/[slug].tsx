@@ -13,7 +13,7 @@ const Post = ({ title, mainImage, body, publishedAt, subText, pollID }: Post) =>
     return (
         <>
             <Navbar />
-            <Box justify="center" align="center" mt={20}>
+            <Box justify="center" align="center" mt={20} width='full'>
                 <Stack spacing={1} mb={6}>
                     <Heading fontSize="7xl" letterSpacing="wide">{title}</Heading>
                     <Text color={textColor} fontSize="md">{subText}</Text>

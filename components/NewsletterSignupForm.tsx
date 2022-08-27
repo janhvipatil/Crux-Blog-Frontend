@@ -99,7 +99,7 @@ export const NewsletterSignupForm = () => {
                                 <Button
                                     type="submit"
                                     w="full"
-                                    colorScheme="blue"
+                                    colorScheme='green'
                                     size="lg"
                                     textTransform="uppercase"
                                     fontSize="sm"
